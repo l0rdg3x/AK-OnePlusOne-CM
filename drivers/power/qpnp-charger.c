@@ -6938,6 +6938,22 @@ void qpnp_external_charger_unregister(struct qpnp_external_charger *external_cha
 }
 EXPORT_SYMBOL(qpnp_external_charger_unregister);
 
+int qpnp_otg_status(bool on, struct qpnp_chg_chip *chip)
+{
+	int host_mode;
+
+	host_mode = is_otg_en_set;
+
+	if (host_mode){
+		printk("[NH] HOST_MODE is TRUE in qpnp_otg_status");
+		return 1;
+	} else {
+		printk("[NH] HOST_MODE is FALSE in qpnp_otg_status");
+		return 0;
+	}
+}
+EXPORT_SYMBOL(qpnp_otg_status);
+
 #if defined(CONFIG_FB)
 /* jingchun.wang@Onlinerd.Driver, 2013/12/14  Add for reset charge current when screen is off */
 static int fb_notifier_callback(struct notifier_block *self,
