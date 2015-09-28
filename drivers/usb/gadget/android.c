@@ -2001,10 +2001,6 @@ error:
 
 static void mass_storage_function_cleanup(struct android_usb_function *f)
 {
-	struct mass_storage_function_config *config;
-
-	config = f->config;
-	fsg_common_put(config->common);
 	kfree(f->config);
 	f->config = NULL;
 }
@@ -2545,7 +2541,6 @@ functions_store(struct device *pdev, struct device_attribute *attr,
 	int err;
 	int is_ffs;
 	int ffs_enabled = 0;
-	int hid_enabled;
 
 	mutex_lock(&dev->mutex);
 
@@ -2614,12 +2609,9 @@ functions_store(struct device *pdev, struct device_attribute *attr,
 			if (err)
 				pr_err("android_usb: Cannot enable '%s' (%d)",
 								   name, err);
-			if (!strcmp(name, "hid"))
-				hid_enabled = 1;
 		}
 		/* HID driver always enabled, it's the whole point of this kernel patch */
-		if (hid_enabled)
-			android_enable_function(dev, conf, "hid");
+		android_enable_function(dev, conf, "hid");
 	}
 
 	/* Free uneeded configurations if exists */
